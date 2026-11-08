@@ -1,6 +1,6 @@
 import { BarChart3, History, LayoutGrid, ShieldCheck, Sparkles, Trash2, type LucideIcon } from "lucide-react";
 
-export interface Feature {
+interface Feature {
   icon: LucideIcon;
   title: string;
   body: string;

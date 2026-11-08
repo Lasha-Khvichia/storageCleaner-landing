@@ -1,6 +1,6 @@
-export type SafetyLevel = "safe" | "review" | "unknown" | "protected";
+type SafetyLevel = "safe" | "review" | "unknown" | "protected";
 
-export interface SafetyLevelInfo {
+interface SafetyLevelInfo {
   level: SafetyLevel;
   name: string;
   body: string;
