@@ -1,0 +1,33 @@
+/* ════════════════════════════════════════════════════════════════════════
+ * Shared surfaces and controls, identical to the desktop app
+ * (storageCleaner/app/src/index.css). All values come from tokens.css.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+/* Glass surface: cards, the header, the download menu. */
+.glass {
+  background: linear-gradient(180deg, var(--sc-glass-top), var(--sc-glass-bottom));
+  border: 1px solid var(--sc-glass-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(14px);
+}
+
+/* Primary call-to-action: accent gradient with a soft glow. */
+.btn-primary {
+  background: linear-gradient(180deg, var(--sc-accent-400), var(--sc-accent-600));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 8px 22px -8px var(--sc-accent-glow);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, var(--sc-accent-300), var(--sc-accent-500));
+}
+
+/* Accent text gradient, as in the app's "Cleaner" wordmark. */
+.text-gradient {
+  background: linear-gradient(90deg, var(--sc-accent-300), var(--sc-accent-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

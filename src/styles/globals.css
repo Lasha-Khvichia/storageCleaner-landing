@@ -1,0 +1,40 @@
+/* Entry point for every style: Tailwind, then the storageCleaner design
+   system. Imported once, in src/app/layout.tsx. */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./theme.css";
+@import "./surfaces.css";
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--sc-header-height);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--sc-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* The app's ambient glows on the dark background. */
+  background:
+    radial-gradient(900px 520px at 12% -8%, var(--sc-glow-1), transparent 60%),
+    radial-gradient(700px 600px at 108% 105%, var(--sc-glow-2), transparent 60%),
+    var(--sc-bg);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--sc-accent-700);
+  color: var(--sc-accent-50);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sc-scrollbar);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}

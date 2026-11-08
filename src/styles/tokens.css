@@ -1,0 +1,79 @@
+/* ════════════════════════════════════════════════════════════════════════
+ * Design tokens: the raw values of the storageCleaner look.
+ *
+ * Copied unchanged from the desktop app's default "Ember" theme
+ * (storageCleaner/app/src/index.css), so the site and the app look the same.
+ * Change a colour here and the whole site follows; components never
+ * hard-code colours (see theme.css for the names they use).
+ * ════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Surfaces & text */
+  --sc-bg: #0c0907;
+  --sc-surface: #17110e;
+  --sc-surface-raised: #201813;
+  --sc-overlay: #1d1612;
+  --sc-border: #2c221c;
+  --sc-text: #f3ece6;
+  --sc-text-muted: #a89688;
+  --sc-scrollbar: #3a2c23;
+  --sc-glass-top: rgba(36, 27, 21, 0.82);
+  --sc-glass-bottom: rgba(20, 15, 12, 0.82);
+  --sc-glass-border: rgba(255, 214, 186, 0.07);
+  --sc-glow-1: rgba(255, 122, 47, 0.16);
+  --sc-glow-2: rgba(255, 122, 47, 0.1);
+  --sc-accent-glow: rgba(255, 122, 47, 0.75);
+
+  /* Accent (orange) */
+  --sc-accent-50: #fff4ec;
+  --sc-accent-100: #ffe4d0;
+  --sc-accent-200: #ffc9a3;
+  --sc-accent-300: #ffb16c;
+  --sc-accent-400: #ff9549;
+  --sc-accent-500: #ff7a2f;
+  --sc-accent-600: #f0601a;
+  --sc-accent-700: #c74a12;
+  --sc-accent-800: #9c3b14;
+  --sc-accent-900: #7d3214;
+  --sc-accent-950: #431707;
+
+  /* Positive / highlight (mint) */
+  --sc-positive-50: #ecfdf6;
+  --sc-positive-100: #d1fae9;
+  --sc-positive-200: #a7f3d8;
+  --sc-positive-300: #6ee7b7;
+  --sc-positive-400: #4fd8a4;
+  --sc-positive-500: #2fbf8a;
+  --sc-positive-600: #22a074;
+  --sc-positive-700: #1b7f5d;
+  --sc-positive-800: #19654c;
+  --sc-positive-900: #165340;
+  --sc-positive-950: #0a2f23;
+
+  /* Neutrals (warm greys) */
+  --sc-neutral-50: #faf7f5;
+  --sc-neutral-100: #f2ece8;
+  --sc-neutral-200: #e9e0d9;
+  --sc-neutral-300: #d2c4b9;
+  --sc-neutral-400: #a89688;
+  --sc-neutral-500: #7f6e62;
+  --sc-neutral-600: #5e5047;
+  --sc-neutral-700: #3f3530;
+  --sc-neutral-800: #2a221e;
+  --sc-neutral-900: #1a1512;
+  --sc-neutral-950: #0e0b09;
+
+  /* Safety levels: the same in every theme, so they always mean the same
+     thing (app: src/lib/format.ts → SAFETY). */
+  --sc-safe: #22c55e;
+  --sc-review: #f59e0b;
+  --sc-unknown: #7f6e62;
+  --sc-protected: #ef4444;
+
+  /* Sizes */
+  --sc-radius-card: 22px;
+  --sc-radius-panel: 24px;
+  --sc-radius-control: 14px;
+  --sc-header-height: 72px;
+  --sc-content-width: 1180px;
+}

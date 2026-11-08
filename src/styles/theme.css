@@ -1,0 +1,57 @@
+/* ════════════════════════════════════════════════════════════════════════
+ * Tailwind names for the tokens (tokens.css). Components only use these:
+ * bg-bg, bg-surface, text-fg, text-muted, border-line, bg-accent-500,
+ * text-positive-300, rounded-card, text-safe ... Never raw colours.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Same font stack as the app. */
+  --font-sans: "Inter", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+
+  --radius-card: var(--sc-radius-card);
+  --radius-panel: var(--sc-radius-panel);
+  --radius-control: var(--sc-radius-control);
+
+  /* Semantic colours */
+  --color-bg: var(--sc-bg);
+  --color-fg: var(--sc-text);
+  --color-muted: var(--sc-text-muted);
+  --color-surface: var(--sc-surface);
+  --color-surface-raised: var(--sc-surface-raised);
+  --color-overlay: var(--sc-overlay);
+  --color-line: var(--sc-border);
+
+  /* Safety levels */
+  --color-safe: var(--sc-safe);
+  --color-review: var(--sc-review);
+  --color-unknown: var(--sc-unknown);
+  --color-protected: var(--sc-protected);
+
+  /* Scales */
+  --color-accent-50: var(--sc-accent-50);
+  --color-accent-100: var(--sc-accent-100);
+  --color-accent-200: var(--sc-accent-200);
+  --color-accent-300: var(--sc-accent-300);
+  --color-accent-400: var(--sc-accent-400);
+  --color-accent-500: var(--sc-accent-500);
+  --color-accent-600: var(--sc-accent-600);
+  --color-accent-700: var(--sc-accent-700);
+  --color-accent-800: var(--sc-accent-800);
+  --color-accent-900: var(--sc-accent-900);
+  --color-accent-950: var(--sc-accent-950);
+
+  --color-positive-100: var(--sc-positive-100);
+  --color-positive-200: var(--sc-positive-200);
+  --color-positive-300: var(--sc-positive-300);
+  --color-positive-400: var(--sc-positive-400);
+  --color-positive-500: var(--sc-positive-500);
+  --color-positive-950: var(--sc-positive-950);
+
+  --color-neutral-300: var(--sc-neutral-300);
+  --color-neutral-400: var(--sc-neutral-400);
+  --color-neutral-500: var(--sc-neutral-500);
+  --color-neutral-600: var(--sc-neutral-600);
+  --color-neutral-700: var(--sc-neutral-700);
+  --color-neutral-800: var(--sc-neutral-800);
+  --color-neutral-900: var(--sc-neutral-900);
+}
