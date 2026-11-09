@@ -57,3 +57,27 @@ Change a value in `tokens.css` and the whole site follows. Components never hard
    that release: Windows setup `.exe`, Linux `.deb`, Linux AppImage. Each item links straight to the file.
 3. In the browser, the visitor's OS is read from the user agent, and the matching installer gets a
    "For your system" badge. The hero button offers that installer directly.
+
+## Security headers
+
+`next.config.ts` sends these on every route:
+
+| Header | What it does |
+|---|---|
+| `Content-Security-Policy` | Only same-origin scripts, styles, images, fonts and connections; no plugins (`object-src 'none'`), no framing (`frame-ancestors 'none'`), forms and `<base>` locked to self. |
+| `Strict-Transport-Security` | Browsers use HTTPS only for two years, including subdomains (preload eligible). |
+| `X-Content-Type-Options: nosniff` | Stops MIME sniffing. |
+| `Referrer-Policy` | Cross-origin requests get only the origin, not the path. |
+| `Permissions-Policy` | Disables camera, microphone, geolocation and FLoC. |
+| `X-Frame-Options: DENY` | Legacy twin of `frame-ancestors`, for old browsers. |
+
+`poweredByHeader` is off, so no `X-Powered-By: Next.js`.
+
+The CSP is **static** (no nonce), which keeps the page statically rendered; a nonce would force every
+request to render dynamically. The price is `'unsafe-inline'` for scripts and styles, because Next.js
+inlines its bootstrap script and styles. `'unsafe-eval'` is added only in `next dev`.
+
+**Changing the CSP safely:** edit the `csp` list in `next.config.ts`, add only the exact origin and only
+to the directive that needs it (for example an image host goes in `img-src`, never in `default-src`),
+then run `npm run build && npm start` and open the page with the browser console open: blocked
+resources show as "Refused to load ...". Plain `<a href>` links to other sites need no CSP entry.

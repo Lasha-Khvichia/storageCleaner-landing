@@ -43,5 +43,6 @@ never hard-code a colour in a component.
 
 - 100-line hard limit per frontend file (hook-enforced). Split into subcomponents, hooks or content files.
 - Keep each folder's `README.md` current when you change it.
+- Security headers live in `next.config.ts`. Any new external origin (font, image, script, API) must be added to the CSP there on purpose, to the narrowest directive.
 - Planned next (not built yet): a backend serving versions/installers and an admin site to add and
   remove versions. Ask Nick before choosing its stack.
