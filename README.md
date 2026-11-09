@@ -24,6 +24,9 @@ npm run build && npm start
 
 Node 22.18 or newer (the tests run `.ts` files directly).
 
+CI (GitHub Actions) runs only when something is merged into `main`, or by hand from the Actions tab.
+Pull requests into `dev` are checked locally with `npm run check`; paste the results in the PR.
+
 ## Layout
 
 | Folder | What it holds |
