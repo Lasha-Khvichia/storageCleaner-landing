@@ -1,11 +1,12 @@
 name: CI
 
-# The full gate on every PR and on pushes to dev / main:
-# typecheck + lint + unit tests + production build.
+# The full gate on each merge to main, or a manual run from the Actions tab:
+# typecheck + lint + unit tests + production build. PRs into dev get no CI:
+# run `npm run check` locally and paste the results in the PR body.
 on:
   push:
-    branches: [main, dev]
-  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
