@@ -14,6 +14,10 @@ npm test             # node --test tests/ (Node's runner, runs .ts directly; no 
 node --test tests/releases.test.ts --test-name-pattern "latest"   # one test
 ```
 
+CI (`.github/workflows/ci.yml`) runs `npm run check` **only on a merge to `main`** (or manually,
+`workflow_dispatch`); Nick's decision 2026-11-09. PRs into `dev` get no CI: run `npm run check` locally
+and paste the results in the PR body.
+
 ## Architecture
 
 - **One data source:** everything about versions comes from `src/releases/latest-release.ts`
