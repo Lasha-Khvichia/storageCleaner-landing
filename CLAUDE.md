@@ -21,12 +21,13 @@ and paste the results in the PR body.
 ## Architecture
 
 - **One data source:** everything about versions comes from `src/releases/latest-release.ts`
-  (`getLatestRelease()`), called once in the server component `src/app/page.tsx` and passed down.
-  Today it reads `releases.mock.ts`; the planned backend returns the same `Release` shape
-  (`types.ts`), so only that function changes. Never import the mock file from a component.
-- **Mock links are real:** the mock uses the actual GitHub release asset URLs and sizes. When a new
-  app version ships, add it to the mock with its real sizes (`gh release view vX.Y.Z -R
-  Lasha-Khvichia/storageCleaner --json assets`). Never invent numbers.
+  (`getLatestRelease()`), called once in the server component `src/app/page.tsx` and passed down. It
+  fetches the backend (`RELEASES_API_URL`, server-only), validates the JSON with `release-guard.ts` and
+  returns `Release | null`. **No mock, fixture or sample data anywhere in the app** (Nick, 2026-11-10);
+  on any failure the components show the "downloads unavailable" fallback linking to GitHub. Tests build
+  their own inline `Release` objects (`tests/sample-release.ts`).
+- **The backend contract** is `GET /api/v1/releases/latest` = the `Release` type exactly. Change both
+  sides together. Hosting: Vercel (Hobby now, Pro once commercial).
 - **Visitor OS:** `useVisitorOs()` reads the user agent with `useSyncExternalStore` (server snapshot
   `null`), so the first client render matches the server HTML. Only it decides the "For your system"
   badge and the hero button.

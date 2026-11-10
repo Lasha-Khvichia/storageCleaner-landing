@@ -1,31 +1,29 @@
 /**
- * The one place the site gets release data from.
- * Today: the mock list. Tomorrow: the backend API (same Release shape).
+ * The one place the site gets release data from: the backend's
+ * GET ${RELEASES_API_URL}/api/v1/releases/latest. There is no fallback data:
+ * when the backend cannot give a valid release, the result is null.
  */
-import { RELEASES_MOCK } from "./releases.mock.ts";
+import { parseApiUrl } from "./api-url.ts";
+import { isRelease } from "./release-guard.ts";
 import type { Release } from "./types.ts";
 
-/** Compare "1.2.10" and "1.10.0" by number, not as text. */
-export function compareVersions(a: string, b: string): number {
-  const pa = a.split(".").map(Number);
-  const pb = b.split(".").map(Number);
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const diff = (pa[i] ?? 0) - (pb[i] ?? 0);
-    if (diff !== 0) return diff;
+const TIMEOUT_MS = 5000;
+const REVALIDATE_SECONDS = 60;
+
+/** The latest release, or null on unset env var, 404, network error, timeout or invalid JSON. Never throws. */
+export async function getLatestRelease(): Promise<Release | null> {
+  const base = parseApiUrl(process.env.RELEASES_API_URL);
+  if (base === null) return null;
+  try {
+    const res = await fetch(`${base}/api/v1/releases/latest`, {
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      next: { revalidate: REVALIDATE_SECONDS },
+    });
+    if (!res.ok) return null;
+    const body: unknown = await res.json();
+    return isRelease(body) ? body : null;
+  } catch {
+    return null;
   }
-  return 0;
-}
-
-/** The highest version in a list, or null for an empty list. */
-export function newestRelease(releases: Release[]): Release | null {
-  return releases.reduce<Release | null>(
-    (best, r) => (best === null || compareVersions(r.version, best.version) > 0 ? r : best),
-    null,
-  );
-}
-
-export async function getLatestRelease(): Promise<Release> {
-  const latest = newestRelease(RELEASES_MOCK);
-  if (!latest) throw new Error("No releases available");
-  return latest;
 }
