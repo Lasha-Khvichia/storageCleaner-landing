@@ -10,7 +10,7 @@
 | `hero/AppPreview.tsx` | A small picture of the app's dashboard built from the design tokens. |
 | `sections/` | Features, Safety, Platforms (one card per OS with every installer), Footer, shared heading. |
 | `use-visitor-os.ts` | Client hook: the visitor's OS from the user agent (`null` on the server). |
-| `OsIcon.tsx`, `GitHubIcon.tsx` | Small inline marks (lucide-react has no brand icons). |
+| `OsIcon.tsx` | Small inline mark (lucide-react has no brand icons). |
 
 ## Flow
 

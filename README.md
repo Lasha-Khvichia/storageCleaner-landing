@@ -1,6 +1,6 @@
 # storageCleaner-landing
 
-The landing page for [storageCleaner](https://github.com/Lasha-Khvichia/storageCleaner), the disk
+The landing page for storageCleaner, the disk
 analyzer and safe cleaner for Windows and Linux. Built with Next.js 16 (App Router), React 19 and
 Tailwind CSS 4, in the same Ember colours as the desktop app.
 

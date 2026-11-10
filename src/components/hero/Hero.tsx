@@ -1,6 +1,5 @@
 import type { Release } from "@/releases/types.ts";
-import { ALL_RELEASES_URL, SOURCE_URL } from "@/releases/links.ts";
-import { GitHubIcon } from "../GitHubIcon";
+import { ALL_RELEASES_URL } from "@/releases/links.ts";
 import { AppPreview } from "./AppPreview";
 import { HeroDownloadButton } from "./HeroDownloadButton";
 
@@ -29,16 +28,9 @@ export function Hero({ release }: { release: Release | null }) {
               Downloads on GitHub
             </a>
           )}
-          <a
-            href={SOURCE_URL}
-            className="inline-flex h-12 items-center gap-2 rounded-full border border-line bg-surface px-6 text-[15px] font-medium text-fg transition-colors hover:bg-surface-raised"
-          >
-            <GitHubIcon />
-            Source on GitHub
-          </a>
         </div>
         <p className="mt-4 text-xs text-muted">
-          {release ? "Free and open source · MIT license" : "Downloads are temporarily unavailable here · MIT license"}
+          {release ? "Free for Windows and Linux" : "Downloads are temporarily unavailable here"}
         </p>
       </div>
       <AppPreview />
