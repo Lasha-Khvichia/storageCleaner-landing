@@ -68,3 +68,4 @@ never hard-code a colour in a component.
 - Sessions use only `jose` (`EncryptJWT`, `dir` + `A256GCM`); no other auth or session library.
 - Never add a link to `/admin` on a public page. `/admin*` stays `noindex` (`src/app/admin/layout.tsx`).
 - Only the numeric GitHub id `ADMIN_GITHUB_USER_ID` may sign in. Folder guide: `src/app/admin/README.md`.
+- Action results go through `useActionToast` (toasts, top right); never render status text inside a table row. Remove confirms in a `<dialog>`.

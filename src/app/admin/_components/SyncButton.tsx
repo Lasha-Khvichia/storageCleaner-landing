@@ -3,19 +3,16 @@
 import { useActionState } from "react";
 import { syncNowAction } from "@/admin/actions";
 import { BUTTON_PRIMARY } from "./button-style";
+import { useActionToast } from "./useActionToast";
 
 export function SyncButton() {
   const [state, run, pending] = useActionState(syncNowAction, null);
+  useActionToast(state);
   return (
-    <form action={run} className="flex flex-wrap items-center gap-3">
+    <form action={run}>
       <button type="submit" disabled={pending} className={BUTTON_PRIMARY}>
         {pending ? "Syncing..." : "Sync now"}
       </button>
-      {state && (
-        <span role="status" className={state.ok ? "text-sm text-positive-300" : "text-sm text-review"}>
-          {state.message}
-        </span>
-      )}
     </form>
   );
 }

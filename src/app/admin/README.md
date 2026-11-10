@@ -35,8 +35,15 @@ Logout is a Server Action that expires the cookie.
 
 The page calls the backend (`/api/v1/admin/...`) with `Authorization: Bearer ADMIN_SERVICE_KEY` and
 `X-GitHub-Token`, validates every answer (`src/admin/admin-guard.ts`) and shows a message per error status.
-Remove asks for a second click. Buttons are real `<button>`s with version-specific labels; results are shown in
-`role="status"`. `layout.tsx` sets `noindex, nofollow`; `robots.txt` also disallows `/admin`.
+Buttons are real `<button>`s with version-specific labels. Remove opens a small centered confirm dialog
+(`RemoveDialog.tsx`, native `<dialog>` with `showModal()`: Esc and Cancel close it, Cancel is focused first; its
+Remove button submits the same form with `change=remove`).
+
+Every action result (success or error) is a toast, top right: `ToastProvider` is mounted once in `layout.tsx`,
+and each action component calls `useActionToast(state)`, which shows one toast per new result. Success hides
+after 4 s (`role="status"`); an error stays until closed (`role="alert"`); at most 3 are shown, newest on top
+(`toast-queue.ts`, unit-tested). Nothing is rendered inside table rows, so the table never shifts. Page-load
+errors (`ErrorNote`) are not toasts. `layout.tsx` sets `noindex, nofollow`; `robots.txt` also disallows `/admin`.
 
 ## Env vars (server-only)
 
