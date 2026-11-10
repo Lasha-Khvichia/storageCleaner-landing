@@ -51,3 +51,10 @@ never hard-code a colour in a component.
 - Security headers live in `next.config.ts`. Any new external origin (font, image, script, API) must be added to the CSP there on purpose, to the narrowest directive.
 - Planned next (not built yet): a backend serving versions/installers and an admin site to add and
   remove versions. Ask Nick before choosing its stack.
+
+## SEO rules (2026-11-11)
+
+- Metadata only through the Next.js Metadata API (`layout.tsx`, `robots.ts`, `sitemap.ts`, `manifest.ts`); no hand-written `<head>` tags.
+- The site address comes from `SITE_URL` (`src/seo/site-url.ts`); never hard-code the domain elsewhere.
+- FAQ text and its JSON-LD both come from `src/content/faq.ts`; answer only with facts the site or app already states. Never claim open source.
+- JSON-LD goes through `src/seo/JsonLd.tsx` (escapes `<`). Keep the share image (`src/seo/og-image.tsx`) in the Ember brand colours.
