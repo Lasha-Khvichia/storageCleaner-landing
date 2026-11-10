@@ -26,6 +26,9 @@ and paste the results in the PR body.
   returns `Release | null`. **No mock, fixture or sample data anywhere in the app** (Nick, 2026-11-10);
   on any failure the components show the "downloads unavailable" fallback linking to GitHub. Tests build
   their own inline `Release` objects (`tests/sample-release.ts`).
+- **`src/app/page.tsx` keeps `export const revalidate = 60`** (2026-11-11): without it, a build that got no
+  release (backend asleep or env var missing) froze the fallback on the live site until the next deploy.
+  The build output must show `/` with `Revalidate 1m`.
 - **The backend contract** is `GET /api/v1/releases/latest` = the `Release` type exactly. Change both
   sides together. Hosting: Vercel (Hobby now, Pro once commercial).
 - **Visitor OS:** `useVisitorOs()` reads the user agent with `useSyncExternalStore` (server snapshot
