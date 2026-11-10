@@ -49,3 +49,19 @@ errors (`ErrorNote`) are not toasts. `layout.tsx` sets `noindex, nofollow`; `rob
 
 `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `ADMIN_SESSION_KEY`, `ADMIN_GITHUB_USER_ID`,
 `ADMIN_SERVICE_KEY`, `RELEASES_API_URL`. Any missing or invalid: "Admin is not configured".
+
+## Paging
+
+The versions table and the audit log show 20 rows per page, newest first, each with its own `Pager` below it
+(server component, plain links, no client JS). The page numbers live in the URL: `/admin?versions=2&audit=3`;
+a param equal to 1 is left out, and each link keeps the other table's param. Flow:
+
+1. `page.tsx` parses `versions` and `audit` (`parsePageParam`: only 1 to 5 digits and at least 1, else page 1).
+2. `adminApi.releases(page)` / `audit(page)` ask the backend for `?page=n&pageSize=20`; `callBackendPage` returns
+   `{ items, total }`, with `total` from the `X-Total-Count` header (missing or invalid: the usual 502 message).
+3. A page past the end of a non-empty list is redirected to the last page (`clampPage`), keeping the other param.
+4. The pager shows "Showing 21–40 of 236", Previous/Next, and the numbers: first, last, current +-1, "…" only where two or more pages are skipped.
+   With one page only the "Showing" text is shown.
+
+Server Actions still call `revalidatePath("/admin")`; the URL, and so the page, stays. The logic and its unit
+tests are in `src/admin/paging.ts` and `tests/admin-paging.test.ts`. Needs the backend `page`/`pageSize` support.
