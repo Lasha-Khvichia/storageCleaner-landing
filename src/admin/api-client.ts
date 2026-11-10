@@ -34,7 +34,11 @@ export interface CallOptions<T> {
   fetchFn?: typeof fetch;
 }
 
-export async function callBackend<T>(access: BackendAccess, options: CallOptions<T>): Promise<ApiResult<T>> {
+const NOT_UNDERSTOOD = "The backend sent an answer the site does not understand.";
+
+type Sent<T> = { ok: true; data: T; res: Response } | { ok: false; status: number; message: string };
+
+async function send<T>(access: BackendAccess, options: CallOptions<T>): Promise<Sent<T>> {
   const { method, path, guard, body, timeoutMs = 15000, fetchFn = fetch } = options;
   try {
     const res = await fetchFn(`${access.apiUrl}/api/v1/admin${path}`, {
@@ -51,9 +55,26 @@ export async function callBackend<T>(access: BackendAccess, options: CallOptions
     });
     if (!res.ok) return { ok: false, status: res.status, message: messageForStatus(res.status) };
     const data: unknown = await res.json();
-    if (!guard(data)) return { ok: false, status: 502, message: "The backend sent an answer the site does not understand." };
-    return { ok: true, data };
+    if (!guard(data)) return { ok: false, status: 502, message: NOT_UNDERSTOOD };
+    return { ok: true, data, res };
   } catch {
     return { ok: false, status: 0, message: "The backend did not answer in time. It may be waking up; try again." };
   }
+}
+
+export async function callBackend<T>(access: BackendAccess, options: CallOptions<T>): Promise<ApiResult<T>> {
+  const sent = await send(access, options);
+  return sent.ok ? { ok: true, data: sent.data } : sent;
+}
+
+/** Like `callBackend` for a paged list: also reads the row count from the `X-Total-Count` header. */
+export async function callBackendPage<T>(
+  access: BackendAccess,
+  options: CallOptions<T[]>,
+): Promise<ApiResult<{ items: T[]; total: number }>> {
+  const sent = await send(access, options);
+  if (!sent.ok) return sent;
+  const header = sent.res.headers.get("X-Total-Count");
+  if (header === null || !/^[0-9]{1,9}$/.test(header)) return { ok: false, status: 502, message: NOT_UNDERSTOOD };
+  return { ok: true, data: { items: sent.data, total: Number(header) } };
 }
