@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { isSyncStatus } from "../src/admin/admin-guard.ts";
-import { callBackend, type BackendAccess } from "../src/admin/api-client.ts";
+import { callBackend, callBackendPage, type BackendAccess } from "../src/admin/api-client.ts";
 
 const access: BackendAccess = { apiUrl: "https://api.example", serviceKey: "SERVICE-KEY-123", token: "gho_TOKEN_456" };
 const status = { running: false, startedAt: null, finishedAt: null, result: null, counts: { added: 0, updated: 0, skipped: 0 } };
@@ -62,4 +62,21 @@ test("a network failure or a malformed answer is reported, not thrown", async ()
     fetchFn: stub(Response.json({ running: "maybe" })).fetchFn,
   });
   assert.equal(odd.ok, false);
+});
+
+test("callBackendPage returns the items and the X-Total-Count", async () => {
+  const guard = (v: unknown): v is number[] => Array.isArray(v);
+  const { fetchFn } = stub(Response.json([1, 2], { headers: { "X-Total-Count": "236" } }));
+  const result = await callBackendPage(access, { method: "GET", path: "/audit?page=1&pageSize=20", guard, fetchFn });
+  assert.deepEqual(result, { ok: true, data: { items: [1, 2], total: 236 } });
+});
+
+test("callBackendPage rejects a missing or invalid X-Total-Count", async () => {
+  const guard = (v: unknown): v is number[] => Array.isArray(v);
+  for (const header of [undefined, "", "-1", "abc", "1.5", "1234567890"]) {
+    const headers: Record<string, string> = header === undefined ? {} : { "X-Total-Count": header };
+    const { fetchFn } = stub(Response.json([], { headers }));
+    const result = await callBackendPage(access, { method: "GET", path: "/audit", guard, fetchFn });
+    assert.deepEqual(result, { ok: false, status: 502, message: "The backend sent an answer the site does not understand." });
+  }
 });
