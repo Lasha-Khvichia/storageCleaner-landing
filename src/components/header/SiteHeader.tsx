@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Release } from "@/releases/types.ts";
+import { ALL_RELEASES_URL } from "@/releases/links.ts";
 import { DownloadMenu } from "./DownloadMenu";
 
 const NAV = [
@@ -9,7 +10,7 @@ const NAV = [
 ];
 
 /** Sticky header: logo left, section links, Download menu top right. */
-export function SiteHeader({ release }: { release: Release }) {
+export function SiteHeader({ release }: { release: Release | null }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line/60 bg-bg/70 backdrop-blur-xl">
       <div className="mx-auto flex h-[var(--sc-header-height)] max-w-[var(--sc-content-width)] items-center gap-8 px-6">
@@ -27,7 +28,13 @@ export function SiteHeader({ release }: { release: Release }) {
           ))}
         </nav>
         <div className="ml-auto">
-          <DownloadMenu release={release} />
+          {release ? (
+            <DownloadMenu release={release} />
+          ) : (
+            <a href={ALL_RELEASES_URL} className="btn-primary flex h-10 items-center rounded-full px-5 text-sm font-semibold text-white">
+              Releases on GitHub
+            </a>
+          )}
         </div>
       </div>
     </header>

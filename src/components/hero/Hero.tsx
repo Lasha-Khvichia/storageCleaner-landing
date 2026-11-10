@@ -1,16 +1,16 @@
 import type { Release } from "@/releases/types.ts";
-import { SOURCE_URL } from "@/releases/links.ts";
+import { ALL_RELEASES_URL, SOURCE_URL } from "@/releases/links.ts";
 import { GitHubIcon } from "../GitHubIcon";
 import { AppPreview } from "./AppPreview";
 import { HeroDownloadButton } from "./HeroDownloadButton";
 
-export function Hero({ release }: { release: Release }) {
+export function Hero({ release }: { release: Release | null }) {
   return (
     <section id="top" className="mx-auto grid max-w-[var(--sc-content-width)] items-center gap-12 px-6 pb-20 pt-16 lg:grid-cols-[1.05fr_1fr] lg:pt-24">
       <div>
         <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted">
           <span className="h-1.5 w-1.5 rounded-full bg-positive-300" />
-          v{release.version} · now on Windows and Linux
+          {release ? `v${release.version} · ` : ""}now on Windows and Linux
         </p>
         <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
           See what fills your disk.
@@ -22,7 +22,13 @@ export function Hero({ release }: { release: Release }) {
           with a reason for every file. Deletes go to the trash, and system folders are never touched.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-3">
-          <HeroDownloadButton release={release} />
+          {release ? (
+            <HeroDownloadButton release={release} />
+          ) : (
+            <a href={ALL_RELEASES_URL} className="btn-primary inline-flex h-12 items-center rounded-full px-7 text-[15px] font-semibold text-white">
+              Downloads on GitHub
+            </a>
+          )}
           <a
             href={SOURCE_URL}
             className="inline-flex h-12 items-center gap-2 rounded-full border border-line bg-surface px-6 text-[15px] font-medium text-fg transition-colors hover:bg-surface-raised"
@@ -31,7 +37,9 @@ export function Hero({ release }: { release: Release }) {
             Source on GitHub
           </a>
         </div>
-        <p className="mt-4 text-xs text-muted">Free and open source · MIT license</p>
+        <p className="mt-4 text-xs text-muted">
+          {release ? "Free and open source · MIT license" : "Downloads are temporarily unavailable here · MIT license"}
+        </p>
       </div>
       <AppPreview />
     </section>

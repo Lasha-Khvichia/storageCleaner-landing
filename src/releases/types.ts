@@ -1,7 +1,6 @@
 /**
  * The shape of app versions and their installers. Today they come from
- * releases.mock.ts; tomorrow the backend API returns exactly this shape,
- * so only latest-release.ts has to change.
+ * the backend API (GET /api/v1/releases/latest). release-guard.ts checks it at runtime.
  */
 
 export type OsId = "windows" | "linux";
