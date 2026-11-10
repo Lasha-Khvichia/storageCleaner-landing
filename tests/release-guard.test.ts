@@ -9,8 +9,9 @@ test("a valid release passes the guard", () => {
 });
 
 test("a missing field is rejected", () => {
-  const { notesUrl: _omitted, ...rest } = sampleRelease();
-  assert.equal(isRelease(rest), false);
+  const withoutNotes: Record<string, unknown> = { ...sampleRelease() };
+  delete withoutNotes.notesUrl;
+  assert.equal(isRelease(withoutNotes), false);
   assert.equal(isRelease(null), false);
   assert.equal(isRelease({ ...sampleRelease(), installers: "none" }), false);
 });
