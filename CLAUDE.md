@@ -58,3 +58,13 @@ never hard-code a colour in a component.
 - The site address comes from `SITE_URL` (`src/seo/site-url.ts`); never hard-code the domain elsewhere.
 - FAQ text and its JSON-LD both come from `src/content/faq.ts`; answer only with facts the site or app already states. Never claim open source.
 - JSON-LD goes through `src/seo/JsonLd.tsx` (escapes `<`). Keep the share image (`src/seo/og-image.tsx`) in the Ember brand colours.
+
+## Admin rules (2026-11-11)
+
+- The GitHub access token lives only inside the encrypted session cookie and in server code. Never put it in
+  props, client components, logs, error text or HTML.
+- The browser never calls the backend. Admin pages are server components; every admin action is a Server Action
+  in `src/admin/actions.ts` that starts with `guardAction()` (Origin/Host check + valid session).
+- Sessions use only `jose` (`EncryptJWT`, `dir` + `A256GCM`); no other auth or session library.
+- Never add a link to `/admin` on a public page. `/admin*` stays `noindex` (`src/app/admin/layout.tsx`).
+- Only the numeric GitHub id `ADMIN_GITHUB_USER_ID` may sign in. Folder guide: `src/app/admin/README.md`.
