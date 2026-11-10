@@ -73,6 +73,28 @@ Change a value in `tokens.css` and the whole site follows. Components never hard
 3. In the browser, the visitor's OS is read from the user agent, and the matching installer gets a
    "For your system" badge. The hero button offers that installer directly.
 
+## Admin
+
+`/admin` lets one GitHub account hide, show, remove and restore versions and run the GitHub sync. The
+browser never talks to the backend: the site's server does, with a service key plus the admin's GitHub
+token. Details and the login flow: `src/app/admin/README.md`.
+
+Env vars (all server-only, in `.env.example`): `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`,
+`ADMIN_SESSION_KEY` (32 random bytes, base64; a comma-separated list rotates keys),
+`ADMIN_GITHUB_USER_ID` (`189664952`), `ADMIN_SERVICE_KEY` (same value as the backend's), plus
+`RELEASES_API_URL`. If any is missing, `/admin` says "Admin is not configured" and offers no login.
+
+Setup steps:
+
+1. GitHub > Settings > Developer settings > OAuth Apps > New: name `storageCleaner admin`, homepage
+   `https://storagecleanerweb.vercel.app`, callback `https://storagecleanerweb.vercel.app/admin/callback`.
+   Generate a client secret.
+2. For local dev create a second OAuth app with callback `http://localhost:3000/admin/callback` and run with
+   `SITE_URL=http://localhost:3000` (a localhost http origin is accepted outside production only).
+3. Vercel (Production) env vars: the five above. Generate the session key with
+   `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`.
+4. Render (backend): `ADMIN_SERVICE_KEY` (the same value) and `ADMIN_GITHUB_USER_ID=189664952`.
+
 ## Security headers
 
 `next.config.ts` sends these on every route:
