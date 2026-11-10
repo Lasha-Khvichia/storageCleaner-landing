@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 import { changeReleaseAction } from "@/admin/actions";
-import { BUTTON, BUTTON_DANGER } from "./button-style";
+import { BUTTON } from "./button-style";
+import { RemoveDialog } from "./RemoveDialog";
+import { useActionToast } from "./useActionToast";
 
 interface Props {
   id: number;
@@ -11,48 +13,32 @@ interface Props {
   removed: boolean;
 }
 
-/** Hide/Show and Remove/Restore for one release; Remove asks for a confirmation first. */
+/** Hide/Show and Remove/Restore for one release; results appear as toasts. */
 export function ReleaseButtons({ id, version, hidden, removed }: Props) {
   const [state, run, pending] = useActionState(changeReleaseAction, null);
-  const [confirming, setConfirming] = useState(false);
-  const submit = (change: string, label: string, style = BUTTON) => (
+  useActionToast(state);
+  const submit = (change: string, label: string) => (
     <button
       type="submit"
       name="change"
       value={change}
       disabled={pending}
-      className={style}
+      className={BUTTON}
       aria-label={`${label} version ${version}`}
     >
       {label}
     </button>
   );
   return (
-    <form action={run} onSubmit={() => setConfirming(false)} className="flex flex-wrap items-center gap-2">
+    <form action={run} className="flex flex-wrap items-center gap-2">
       <input type="hidden" name="id" value={id} />
       {removed ? (
         submit("restore", "Restore")
       ) : (
         <>
           {submit(hidden ? "show" : "hide", hidden ? "Show" : "Hide")}
-          {confirming ? (
-            <>
-              {submit("remove", "Confirm remove", BUTTON_DANGER)}
-              <button type="button" className={BUTTON} onClick={() => setConfirming(false)}>
-                Cancel
-              </button>
-            </>
-          ) : (
-            <button type="button" className={BUTTON_DANGER} onClick={() => setConfirming(true)}>
-              Remove
-            </button>
-          )}
+          <RemoveDialog version={version} disabled={pending} />
         </>
-      )}
-      {state && (
-        <span role="status" className={state.ok ? "text-sm text-positive-300" : "text-sm text-review"}>
-          {state.message}
-        </span>
       )}
     </form>
   );
