@@ -43,6 +43,7 @@ never hard-code a colour in a component.
 ## Rules
 
 - 100-line hard limit per frontend file (hook-enforced). Split into subcomponents, hooks or content files.
+- The app is closed source: never link the private app repo (`Lasha-Khvichia/storageCleaner`) or mention a license on the site. Downloads and release links go to `Lasha-Khvichia/storageCleaner-releases`.
 - Keep each folder's `README.md` current when you change it.
 - Security headers live in `next.config.ts`. Any new external origin (font, image, script, API) must be added to the CSP there on purpose, to the narrowest directive.
 - Planned next (not built yet): a backend serving versions/installers and an admin site to add and

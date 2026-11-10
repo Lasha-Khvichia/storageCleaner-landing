@@ -10,7 +10,7 @@ The only place the site gets release data from.
 | `release-guard.ts` | `isRelease()`: runtime type guard for the backend JSON (fields, `os`/`kind`, https URLs). |
 | `recommend-installer.ts` | `detectOs(userAgent)` and `recommendedInstaller()`: which installer to suggest. |
 | `format-release.ts` | `formatBytes` (binary units, like the app) and `formatReleaseDate`. |
-| `links.ts` | Fixed links to the GitHub repo and its releases page. |
+| `links.ts` | The fixed link to the public `storageCleaner-releases` repo (`ALL_RELEASES_URL`). |
 
 ## Flow
 
