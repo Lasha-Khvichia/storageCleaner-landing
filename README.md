@@ -96,3 +96,17 @@ inlines its bootstrap script and styles. `'unsafe-eval'` is added only in `next 
 to the directive that needs it (for example an image host goes in `img-src`, never in `default-src`),
 then run `npm run build && npm start` and open the page with the browser console open: blocked
 resources show as "Refused to load ...". Plain `<a href>` links to other sites need no CSP entry.
+
+## SEO
+
+- **`SITE_URL`** (server-only env var, https origin, no path, no trailing slash; default
+  `https://storagecleanerweb.vercel.app`) feeds `metadataBase`, canonical, sitemap, robots and JSON-LD. A
+  custom domain later only changes this variable. An invalid value silently falls back to the default.
+- Metadata (title, description, canonical, robots, Open Graph, Twitter, theme colour): `src/app/layout.tsx`.
+  Share image: `src/app/opengraph-image.tsx` / `twitter-image.tsx` via `src/seo/og-image.tsx`.
+- Structured data: `src/seo/json-ld.ts` (`SoftwareApplication`, `FAQPage`); FAQ text: `src/content/faq.ts`.
+- Crawl files: `src/app/robots.ts`, `sitemap.ts`, `manifest.ts`.
+- **Verify:** `npm run build && npx next start`, then `curl` the page and `/robots.txt`, `/sitemap.xml`,
+  `/manifest.webmanifest`, `/opengraph-image` (PNG, 1200x630); check the page with Google's Rich Results Test.
+- **Nick's checklist (needs his accounts):** add the site to Google Search Console and Bing Webmaster Tools,
+  submit `<SITE_URL>/sitemap.xml`; after a custom domain, set `SITE_URL` in Vercel and redeploy.
