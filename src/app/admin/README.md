@@ -60,7 +60,7 @@ a param equal to 1 is left out, and each link keeps the other table's param. Flo
 2. `adminApi.releases(page)` / `audit(page)` ask the backend for `?page=n&pageSize=20`; `callBackendPage` returns
    `{ items, total }`, with `total` from the `X-Total-Count` header (missing or invalid: the usual 502 message).
 3. A page past the end of a non-empty list is redirected to the last page (`clampPage`), keeping the other param.
-4. The pager shows "Showing 21–40 of 236", Previous/Next, and the numbers: first, last, current +-1, "…" for gaps.
+4. The pager shows "Showing 21–40 of 236", Previous/Next, and the numbers: first, last, current +-1, "…" only where two or more pages are skipped.
    With one page only the "Showing" text is shown.
 
 Server Actions still call `revalidatePath("/admin")`; the URL, and so the page, stays. The logic and its unit

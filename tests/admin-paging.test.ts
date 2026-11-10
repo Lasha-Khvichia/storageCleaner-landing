@@ -1,10 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { adminHref, clampPage, lastPage, pageNumbers, parsePageParam, showingText } from "../src/admin/paging.ts";
+import { MAX_PAGE, adminHref, clampPage, lastPage, pageNumbers, parsePageParam, showingText } from "../src/admin/paging.ts";
 
 test("page params: only 1 to 5 digits and at least 1 count", () => {
   assert.equal(parsePageParam("3"), 3);
-  assert.equal(parsePageParam("99999"), 99999);
+  assert.equal(parsePageParam("10000"), 10000);
+  assert.equal(parsePageParam("99999"), MAX_PAGE);
   for (const bad of [undefined, "", "0", "-1", "1.5", "abc", "100000", "007x", ["2", "3"]]) {
     assert.equal(parsePageParam(bad), 1);
   }
@@ -37,7 +38,8 @@ test("page numbers: first, last, current +-1, gaps", () => {
   assert.deepEqual(pageNumbers(1, 3), [1, 2, 3]);
   assert.deepEqual(pageNumbers(1, 12), [1, 2, "gap", 12]);
   assert.deepEqual(pageNumbers(6, 12), [1, "gap", 5, 6, 7, "gap", 12]);
-  assert.deepEqual(pageNumbers(4, 12), [1, "gap", 3, 4, 5, "gap", 12]);
+  assert.deepEqual(pageNumbers(4, 12), [1, 2, 3, 4, 5, "gap", 12]);
+  assert.deepEqual(pageNumbers(3, 5), [1, 2, 3, 4, 5]);
   assert.deepEqual(pageNumbers(12, 12), [1, "gap", 11, 12]);
 });
 

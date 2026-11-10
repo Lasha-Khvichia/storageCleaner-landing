@@ -1,5 +1,7 @@
 /** Page numbers for the admin lists: parsing the URL, clamping, links and the "Showing" text. */
 export const PAGE_SIZE = 20;
+/** The backend answers 400 for a page above this. */
+export const MAX_PAGE = 10000;
 
 export type PageParam = "versions" | "audit";
 export interface PageState {
@@ -8,10 +10,10 @@ export interface PageState {
 }
 export type PageItem = number | "gap";
 
-/** Only 1 to 5 digits and at least 1 count; anything else is page 1. */
+/** Only 1 to 5 digits and at least 1 count (capped at MAX_PAGE); anything else is page 1. */
 export function parsePageParam(raw: string | string[] | undefined): number {
   if (typeof raw !== "string" || !/^[0-9]{1,5}$/.test(raw)) return 1;
-  return Math.max(1, Number(raw));
+  return Math.min(MAX_PAGE, Math.max(1, Number(raw)));
 }
 
 export function lastPage(total: number): number {
@@ -40,7 +42,8 @@ export function pageNumbers(current: number, last: number): PageItem[] {
   const items: PageItem[] = [];
   wanted.forEach((n, index) => {
     const before = wanted[index - 1];
-    if (before !== undefined && n - before > 1) items.push("gap");
+    if (before !== undefined && n - before === 2) items.push(before + 1);
+    else if (before !== undefined && n - before > 2) items.push("gap");
     items.push(n);
   });
   return items;
