@@ -1,6 +1,7 @@
 import type { OsId, Release } from "@/releases/types.ts";
 import { formatBytes } from "@/releases/format-release.ts";
 import { OS_NAME, OsIcon } from "../OsIcon";
+import { DownloadsUnavailable } from "./DownloadsUnavailable";
 import { SectionHeading } from "./SectionHeading";
 
 const HOW_TO: Record<OsId, string> = {
@@ -9,7 +10,8 @@ const HOW_TO: Record<OsId, string> = {
 };
 
 /** One card per OS with a direct button for each of its installers. */
-export function Platforms({ release }: { release: Release }) {
+export function Platforms({ release }: { release: Release | null }) {
+  if (!release) return <DownloadsUnavailable />;
   const oses: OsId[] = ["windows", "linux"];
   return (
     <section id="platforms" className="mx-auto max-w-[var(--sc-content-width)] px-6 py-20">
