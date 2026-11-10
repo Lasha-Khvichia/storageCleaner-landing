@@ -17,7 +17,7 @@ export const FAQ: FaqItem[] = [
   {
     question: "Can I undo a cleanup?",
     answer:
-      "Yes. Deleted items go to the Recycle Bin or Trash, every cleanup is logged, and you can restore it from the trash with one click.",
+      "By default, yes. Deleted items go to the Recycle Bin or Trash, every cleanup is logged, and you can restore a whole cleanup from the app's history. Permanent delete, which asks you to type a confirmation phrase, cannot be undone.",
   },
   {
     question: "How is it different from Windows Disk Cleanup?",
@@ -27,10 +27,6 @@ export const FAQ: FaqItem[] = [
   {
     question: "Which systems does it run on?",
     answer:
-      "Windows (a setup installer) and Linux (a .deb package for Ubuntu, Debian and Linux Mint, or an AppImage).",
-  },
-  {
-    question: "How fast is a scan?",
-    answer: "A whole drive scans in seconds.",
+      "Windows 10 and 11 (64-bit, setup installer) and Linux (a .deb package for Ubuntu, Debian and Linux Mint, or an AppImage for any distribution).",
   },
 ];
